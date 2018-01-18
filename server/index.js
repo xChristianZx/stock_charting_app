@@ -1,15 +1,23 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.send("HELLO THERE");
+  res.json([{ express: "was here" }, { twelve: "12" }]);
 });
 
-const PORT = process.env.PORT || 3000;
+app.post("/quote", (req, res) => {  
+  console.log(req.body);
+  res.send('Goodjob')
+});
+
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Serving on Port ${PORT}`);
 });
