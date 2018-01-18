@@ -1,0 +1,1 @@
+fullstack stockmarket charting app for FCC Projects
