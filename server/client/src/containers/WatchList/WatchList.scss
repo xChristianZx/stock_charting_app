@@ -3,27 +3,64 @@
   background: grey;
   margin: 2rem;
   height: 50vh;
-  min-width: 20vw;
+  min-width: 30vw;
   flex-grow: 0 1 auto;
 }
 
-.list {
-  //   border: 1px solid black;
-  background: lightgrey;
-}
 table {
   display: flex;
+  flex-flow: column nowrap;
   border: 1px solid red;
   width: 100%;
-}
-td {
-  padding: 0.5rem 1rem;
-}
-td.ticker {
-  border-right: 1px solid black;
-  flex: 2 1 auto;
+  background: lightgray;
 }
 
-td.price {
-  flex: 0 1 auto;
+tr.header-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+thead {
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+
+th {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+}
+
+th.ticker {
+  border-right: 1px solid black;
+  width: 40%;
+}
+
+th.price {
+  width: 60%;
+}
+
+tbody {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  & tr.body-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+  }
+}
+
+td {
+  padding: 0.5rem 1rem;
+
+  &.ticker {
+    border-right: 1px solid black;
+    width: 40%;
+    text-align: left;
+  }
+
+  &.price {
+    width: 60%;
+    text-align: right;
+  }
 }
