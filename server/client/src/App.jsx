@@ -1,21 +1,14 @@
 import React, { Component } from "react";
 import "./App.css";
+import WatchList from "./containers/WatchList/WatchList";
+// import Charts from "./containers/Charts/Charts";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      message: ""
-    };
-  }
-
   render() {
     return (
       <div className="App">
-        <form action="/quote" method="POST">
-          <input type="text" name="test"/>
-          <input type="submit" />
-        </form>        
+        <WatchList />
+        {/* <Charts /> */}
       </div>
     );
   }

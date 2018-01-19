@@ -1,0 +1,29 @@
+.watchlist-container {
+  border: 2px solid black;
+  background: grey;
+  margin: 2rem;
+  height: 50vh;
+  min-width: 20vw;
+  flex-grow: 0 1 auto;
+}
+
+.list {
+  //   border: 1px solid black;
+  background: lightgrey;
+}
+table {
+  display: flex;
+  border: 1px solid red;
+  width: 100%;
+}
+td {
+  padding: 0.5rem 1rem;
+}
+td.ticker {
+  border-right: 1px solid black;
+  flex: 2 1 auto;
+}
+
+td.price {
+  flex: 0 1 auto;
+}
