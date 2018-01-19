@@ -3,6 +3,10 @@ import "./WatchList.css";
 import ListItem from "../../components/ListItem/ListItem";
 
 class WatchList extends Component {
+  state = {
+    data: [{ ticker: "AAPL", price: 300 }, { ticker: "GE", price: 40 }]
+  };
+
   render() {
     return (
       <div className="watchlist-container">
@@ -14,11 +18,7 @@ class WatchList extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr className="body-row">
-              <td className="ticker">AAPL</td>
-              <td className="price">300</td>
-            </tr>
-            <ListItem />
+            <ListItem data={this.state.data} />
           </tbody>
         </table>
       </div>
