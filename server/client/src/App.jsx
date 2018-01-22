@@ -7,7 +7,8 @@ import Axios from "axios";
 class App extends Component {
   state = {
     stocksArray: [],
-    focus: null
+    focus: null,
+    inputValue: ""
   };
 
   componentDidMount() {
@@ -31,12 +32,28 @@ class App extends Component {
     this.setState({ focus: id });
   };
 
+  handleTickerSubmit = e => {
+    e.preventDefault();
+    const newTicker = { ticker: this.state.inputValue.toUpperCase() };
+    this.setState(prevState => ({
+      stocksArray: [...prevState.stocksArray, newTicker],
+      inputValue: ""
+    }));
+  };
+
+  handleTickerChange = e => {
+    this.setState({ inputValue: e.target.value });
+  };
+
   render() {
     return (
       <div className="App">
         <WatchList
           data={this.state.stocksArray}
+          inputValue={this.state.inputValue}
           fetchTicker={this.fetchTicker}
+          handleTickerChange={this.handleTickerChange}
+          handleTickerSubmit={this.handleTickerSubmit}
         />
         {/* <Charts /> */}
       </div>

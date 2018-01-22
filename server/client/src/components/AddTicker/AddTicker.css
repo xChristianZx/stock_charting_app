@@ -1,0 +1,14 @@
+tr.item-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black; }
+
+td {
+  padding: 0.5rem 1rem; }
+  td.add-ticker {
+    border-right: 1px solid black;
+    width: 40%;
+    text-align: left; }
+  td.filler {
+    width: 60%;
+    text-align: right; }
