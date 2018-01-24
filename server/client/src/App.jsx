@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import "./App.css";
 import WatchList from "./containers/WatchList/WatchList";
-// import Charts from "./containers/Charts/Charts";
+import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
 
 class App extends Component {
   state = {
     stocksArray: [],
     focus: null,
-    inputValue: ""
+    inputValue: "",
+    currentStockData: []
   };
-
+  
   componentDidMount() {
     const stocksArray = [{ ticker: "AAPL" }, { ticker: "GE" }];
     this.setState({ stocksArray });
@@ -22,7 +23,10 @@ class App extends Component {
 
     Axios.get(compUrl)
       .then(payload => {
-        console.log(ticker, payload);
+        console.log(ticker, payload.data);
+        const data = payload.data;
+        const dataClose = data.map(item => [Date.parse(item.date), item.close]);
+        this.setState({ currentStockData: dataClose });
       })
       .catch(err => console.log(err));
   };
@@ -55,7 +59,7 @@ class App extends Component {
           handleTickerChange={this.handleTickerChange}
           handleTickerSubmit={this.handleTickerSubmit}
         />
-        {/* <Charts /> */}
+        <Charts data={this.state.currentStockData} />
       </div>
     );
   }
