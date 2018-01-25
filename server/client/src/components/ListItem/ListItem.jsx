@@ -3,8 +3,7 @@ import "./ListItem.css";
 
 const ListItem = props => {
   const stocksArray = props.stocksArray;
-  const fetchTicker = props.fetchTicker;
-  console.log("DATA:", stocksArray);
+  const fetchTicker = props.fetchTicker;  
   const list = stocksArray.map((item, i) => {
     return (
       <tr
