@@ -1,4 +1,4 @@
 .charts-container {
   border: 1px solid black;
   flex-grow: 3;
-  height: 70vh; }
+  min-height: 70vh; }
