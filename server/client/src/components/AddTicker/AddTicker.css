@@ -8,7 +8,11 @@ td {
   td.add-ticker {
     border-right: 1px solid black;
     width: 40%;
-    text-align: left; }
+    text-align: left;
+    padding: none; }
+    td.add-ticker input {
+      border: none;
+      width: 100%; }
   td.filler {
     width: 60%;
     text-align: right; }

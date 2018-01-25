@@ -10,7 +10,12 @@ td {
   &.add-ticker {
     border-right: 1px solid black;
     width: 40%;
-    text-align: left;    
+    text-align: left;   
+    padding: none; 
+    & input {
+      border: none;
+      width: 100%;      
+    }
   }
 
   &.filler {

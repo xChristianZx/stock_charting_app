@@ -4,26 +4,24 @@ import ReactHighStock from "react-highcharts/ReactHighstock.src";
 
 class Charts extends Component {
   render() {
-    // const data = [
-    //   [1220832000000, 22.56],
-    //   [1220918400000, 21.67],
-    //   [1221004800000, 21.66],
-    //   [1221091200000, 21.81],
-    //   [1221177600000, 21.28],
-    //   [1221436800000, 20.05],
-    //   [1221523200000, 19.98]
-    // ];
     const data = this.props.data;
-    console.log(data);
+    const ticker = this.props.ticker;
+    const dataClose = data.map(item => [Date.parse(item.date), item.close]);
+    // console.log("Charts Data:", data);
 
     const config = {
+      title: {
+        align: "left",
+        text: ticker,
+        x: 15
+      },
       rangeSelector: {
         selected: 1
       },
       series: [
         {
-          name: "AAPL",
-          data: data,
+          name: "Close",
+          data: dataClose,
           tooltip: {
             valueDecimals: 2
           }
@@ -33,7 +31,7 @@ class Charts extends Component {
 
     return (
       <div className="charts-container">
-        <ReactHighStock config={config} data={data} />
+        <ReactHighStock config={config} />
       </div>
     );
   }
