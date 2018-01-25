@@ -16,7 +16,7 @@ class WatchList extends Component {
           </thead>
           <tbody>
             <ListItem
-              data={this.props.data}
+              stocksArray={this.props.stocksArray}
               fetchTicker={this.props.fetchTicker}
             />
 

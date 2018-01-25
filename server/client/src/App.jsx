@@ -59,7 +59,7 @@ class App extends Component {
       return (
         <div className="App">
           <WatchList
-            data={this.state.stocksArray}
+            stocksArray={this.state.stocksArray}
             inputValue={this.state.inputValue}
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}
@@ -74,7 +74,7 @@ class App extends Component {
       return (
         <div className="App">
           <WatchList
-            data={this.state.stocksArray}
+            stocksArray={this.state.stocksArray}
             inputValue={this.state.inputValue}
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}

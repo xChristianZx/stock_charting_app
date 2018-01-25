@@ -2,10 +2,10 @@ import React from "react";
 import "./ListItem.css";
 
 const ListItem = props => {
-  const data = props.data;
+  const stocksArray = props.stocksArray;
   const fetchTicker = props.fetchTicker;
-
-  const list = data.map((item, i) => {
+  console.log("DATA:", stocksArray);
+  const list = stocksArray.map((item, i) => {
     return (
       <tr
         className="item-row"
