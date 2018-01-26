@@ -8,6 +8,7 @@ class App extends Component {
   state = {
     isLoading: true,
     stocksArray: [],
+    stocksArrayData: [],
     focus: null,
     inputValue: "",
     currentTicker: "",
@@ -19,7 +20,13 @@ class App extends Component {
     this.setState({ stocksArray });
   }
 
-  getData = ticker => {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.stocksArray !== this.state.stocksArray) {
+      this.getStocksArrayData(this.state.stocksArray);
+    }
+  }
+
+  getCurrentStockData = ticker => {
     const baseUrl = "https://api.iextrading.com/1.0/stock/";
     const compUrl = `${baseUrl}${ticker}/chart/1y`;
 
@@ -36,8 +43,23 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  getStocksArrayData = listArr => {
+    const tickerArr = listArr.map(item => item.ticker).join(",");
+
+    const baseUrl = "https://api.iextrading.com/1.0/tops/";
+    const compUrl = `${baseUrl}last?symbols=${tickerArr}`;
+
+    Axios.get(compUrl)
+      .then(payload => {
+        const data = payload.data;
+        console.log("HERE I AM:", payload.data);
+        this.setState({ stocksArrayData: data });
+      })
+      .catch(err => console.log(err));
+  };
+
   fetchTicker = (ticker, id) => {
-    this.getData(ticker);
+    this.getCurrentStockData(ticker);
     this.setState({ focus: id });
   };
 
@@ -60,6 +82,7 @@ class App extends Component {
         <div className="App">
           <WatchList
             stocksArray={this.state.stocksArray}
+            stocksArrayData={this.state.stocksArrayData}
             inputValue={this.state.inputValue}
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}
@@ -75,6 +98,7 @@ class App extends Component {
         <div className="App">
           <WatchList
             stocksArray={this.state.stocksArray}
+            stocksArrayData={this.state.stocksArrayData}
             inputValue={this.state.inputValue}
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}

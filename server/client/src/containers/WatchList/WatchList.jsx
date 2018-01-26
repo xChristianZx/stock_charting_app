@@ -4,6 +4,39 @@ import ListItem from "../../components/ListItem/ListItem";
 import AddTicker from "../../components/AddTicker/AddTicker";
 
 class WatchList extends Component {
+  renderList = () => {
+    if (!this.props.stocksArrayData) {
+      return (
+        <tbody>
+          <tr>
+            <td>Loading...</td>
+          </tr>
+          <AddTicker
+            inputValue={this.props.inputValue}
+            handleTickerSubmit={this.props.handleTickerSubmit}
+            handleTickerChange={this.props.handleTickerChange}
+          />
+        </tbody>
+      );
+    } else {
+      return (
+        <tbody>
+          <ListItem
+            stocksArray={this.props.stocksArray}
+            stocksArrayData={this.props.stocksArrayData}
+            fetchTicker={this.props.fetchTicker}
+          />
+
+          <AddTicker
+            inputValue={this.props.inputValue}
+            handleTickerSubmit={this.props.handleTickerSubmit}
+            handleTickerChange={this.props.handleTickerChange}
+          />
+        </tbody>
+      );
+    }
+  };
+
   render() {
     return (
       <div className="watchlist-container">
@@ -14,18 +47,7 @@ class WatchList extends Component {
               <th className="price">Price</th>
             </tr>
           </thead>
-          <tbody>
-            <ListItem
-              stocksArray={this.props.stocksArray}
-              fetchTicker={this.props.fetchTicker}
-            />
-
-            <AddTicker
-              inputValue={this.props.inputValue}
-              handleTickerSubmit={this.props.handleTickerSubmit}
-              handleTickerChange={this.props.handleTickerChange}
-            />
-          </tbody>
+          {this.renderList()}
         </table>
       </div>
     );
