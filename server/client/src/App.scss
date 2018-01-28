@@ -2,11 +2,12 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  // border: 1px solid red;
-}
-
-.loading-header {
-  text-align: center;
+  align-items: flex-start;
+  width: 80vw;
+  min-height: 70vh;
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid black;
+  border-radius: 25px;
+  background: white;
 }

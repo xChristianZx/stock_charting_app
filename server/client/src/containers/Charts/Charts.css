@@ -1,4 +1,10 @@
 .charts-container {
   border: 1px solid black;
   flex-grow: 3;
-  min-height: 70vh; }
+  min-height: 40vh;
+  width: 60%;
+  margin: 2rem; }
+  .charts-container.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center; }

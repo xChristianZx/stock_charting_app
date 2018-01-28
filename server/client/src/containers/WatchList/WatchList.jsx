@@ -42,6 +42,9 @@ class WatchList extends Component {
       <div className="watchlist-container">
         <table className="list">
           <thead>
+            <tr className="wl-header-row" >
+              <th>WatchList</th>
+            </tr>
             <tr className="header-row">
               <th className="ticker">Ticker</th>
               <th className="price">Price</th>

@@ -1,8 +1,8 @@
 .watchlist-container {
-  border: 2px solid black;
-  background: grey;
+  border: 1px solid black;
+  background: #acacac;
   margin: 2rem;
-  min-height: 70vh;
+  min-height: 40vh;
   min-width: 20vw;
   flex-grow: 0 1 auto; }
 
@@ -10,7 +10,15 @@ table {
   display: flex;
   flex-flow: column nowrap;
   width: 100%;
-  background: lightgray; }
+  background: #e6e6e6; }
+
+.wl-header-row {
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid black; }
+  .wl-header-row th {
+    font-size: 1.8rem;
+    color: #6d6d6d; }
 
 tr.header-row {
   display: flex;
@@ -41,7 +49,8 @@ tbody {
     border-bottom: 1px solid black; }
 
 td {
-  padding: 0.5rem 1rem; }
+  padding: 0.5rem 1rem;
+  font-size: 1.6rem; }
   td.ticker {
     border-right: 1px solid black;
     width: 40%;

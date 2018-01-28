@@ -52,7 +52,7 @@ class App extends Component {
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        console.log("HERE I AM:", payload.data);
+        console.log("StocksArrayData:", payload);
         this.setState({ stocksArrayData: data });
       })
       .catch(err => console.log(err));
@@ -88,8 +88,8 @@ class App extends Component {
             handleTickerChange={this.handleTickerChange}
             handleTickerSubmit={this.handleTickerSubmit}
           />
-          <div className="charts-container">
-            <h2 className="loading-header">Loading...</h2>
+          <div className="charts-container loading">
+            <h2 className="loading-header">Select a stock</h2>
           </div>
         </div>
       );
