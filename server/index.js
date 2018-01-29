@@ -20,12 +20,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.json([{ express: "was here" }, { twelve: "12" }]);
+  wsServer.broadcast(JSON.stringify({ msg: "HELLO MOTO" }));
 });
 
 app.get("/data", (req, res) => {
   console.log(req.body);
   Stock.remove({}, err => console.log(err));
   const apple = new Stock({ symbol: "AAPL" }).save();
+  const fb = new Stock({ symbol: "FB" }).save();
   res.send("Goodjob");
 });
 
@@ -40,14 +42,24 @@ wsServer.broadcast = function broadcast(data) {
 
 //Server to Client Connection
 wsServer.on("connection", ws => {
-  ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));
+  Stock.find({}, (err, stocks) => {
+    if (err) {
+      console.log(err);
+    } else {
+      ws.send(JSON.stringify(stocks));
+    }
+  });
+  // ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));
+
   ws.on("message", msg => {
     console.log("Received: ", msg);
   });
 
   ws.on("close", (code, reason) => {
-    console.log(`Client connection closed - ${reason} code: ${code}`);
+    console.log(`Client Conection Closed - ${reason} code: ${code}`);
+    ws.terminate();
   });
+  
   ws.on("error", err => {
     console.log("Serverside WS Error", err);
     ws.terminate();

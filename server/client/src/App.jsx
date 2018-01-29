@@ -16,8 +16,8 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const stocksArray = [{ ticker: "AAPL" }, { ticker: "GE" }];
-    this.setState({ stocksArray });
+    // const stocksArray = [{ ticker: "AAPL" }, { ticker: "GE" }];
+    // this.setState({ stocksArray });
     this.wsSetup();
   }
 
@@ -37,6 +37,24 @@ class App extends Component {
       console.log("WS State:", msg.type, socket.readyState);
       socket.send("Client Connected");
     };
+
+    socket.onmessage = msg => {
+      console.log(msg);
+      const payload = JSON.parse(msg.data);
+      const list = payload.map(item => {
+        return { ticker: item.symbol };
+      });
+      console.log(list);
+      this.setState({ stocksArray: list });
+    };
+
+    socket.onclose = msg => {
+      console.log("WebSocket Connection Close:", msg);
+    };
+    
+    window.addEventListener("beforeunload", () => {
+      socket.close();
+    });
   };
 
   getCurrentStockData = ticker => {
