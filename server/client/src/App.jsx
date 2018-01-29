@@ -98,7 +98,7 @@ class App extends Component {
 
   handleTickerSubmit = e => {
     e.preventDefault();
-    const newTicker = { ticker: this.state.inputValue.toUpperCase() };
+    const newTicker = this.state.inputValue.toUpperCase();
     this.setState(prevState => ({
       stocksArray: [...prevState.stocksArray, newTicker],
       inputValue: ""
