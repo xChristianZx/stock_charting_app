@@ -30,7 +30,11 @@ class App extends Component {
   wsSetup = () => {
     const socket = new WebSocket("ws://localhost:8080");
     if (socket.readyState === 0) {
-      console.log(`WS State: ${socket.readyState} connecting `);
+      console.log(
+        `WS State: ${socket.readyState}\nconnecting to ${socket.url} ${
+          socket.protocol
+        }`
+      );
     }
 
     socket.onopen = msg => {
@@ -39,19 +43,17 @@ class App extends Component {
     };
 
     socket.onmessage = msg => {
-      console.log(msg);
+      // console.log(msg);
       const payload = JSON.parse(msg.data);
-      const list = payload.map(item => {
-        return { ticker: item.symbol };
-      });
-      console.log(list);
+      const list = payload.map(item => item.symbol);
+      console.log("DBWL: ", list);
       this.setState({ stocksArray: list });
     };
 
     socket.onclose = msg => {
       console.log("WebSocket Connection Close:", msg);
     };
-    
+
     window.addEventListener("beforeunload", () => {
       socket.close();
     });
@@ -75,7 +77,7 @@ class App extends Component {
   };
 
   getStocksArrayData = listArr => {
-    const tickerArr = listArr.map(item => item.ticker).join(",");
+    const tickerArr = listArr.map(item => item).join(",");
 
     const baseUrl = "https://api.iextrading.com/1.0/tops/";
     const compUrl = `${baseUrl}last?symbols=${tickerArr}`;

@@ -42,6 +42,8 @@ wsServer.broadcast = function broadcast(data) {
 
 //Server to Client Connection
 wsServer.on("connection", ws => {
+  
+  //Populate clients stocksArray state
   Stock.find({}, (err, stocks) => {
     if (err) {
       console.log(err);
@@ -59,7 +61,7 @@ wsServer.on("connection", ws => {
     console.log(`Client Conection Closed - ${reason} code: ${code}`);
     ws.terminate();
   });
-  
+
   ws.on("error", err => {
     console.log("Serverside WS Error", err);
     ws.terminate();
