@@ -3,11 +3,15 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
 const keys = require("./config/keys");
+const WebSocket = require("ws");
+const http = require("http");
+
+const app = express();
+const server = http.createServer(app);
+const wsServer = new WebSocket.Server({ port: 8080 });
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI), { useMongoClient: true };
-
-const app = express();
 
 const Stock = require("./models/Stocks");
 
@@ -20,12 +24,38 @@ app.get("/", (req, res) => {
 
 app.get("/data", (req, res) => {
   console.log(req.body);
-  // const apple = new Stock({ symbol: "AAPL" }).save();
+  Stock.remove({}, err => console.log(err));
+  const apple = new Stock({ symbol: "AAPL" }).save();
   res.send("Goodjob");
+});
+
+// Broadcast Function
+wsServer.broadcast = function broadcast(data) {
+  wsServer.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
+
+//Server to Client Connection
+wsServer.on("connection", ws => {
+  ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));
+  ws.on("message", msg => {
+    console.log("Received: ", msg);
+  });
+
+  ws.on("close", (code, reason) => {
+    console.log(`Client connection closed - ${reason} code: ${code}`);
+  });
+  ws.on("error", err => {
+    console.log("Serverside WS Error", err);
+    ws.terminate();
+  });
 });
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Serving on Port ${PORT}`);
 });

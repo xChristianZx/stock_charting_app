@@ -18,6 +18,7 @@ class App extends Component {
   componentDidMount() {
     const stocksArray = [{ ticker: "AAPL" }, { ticker: "GE" }];
     this.setState({ stocksArray });
+    this.wsSetup();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -25,6 +26,18 @@ class App extends Component {
       this.getStocksArrayData(this.state.stocksArray);
     }
   }
+
+  wsSetup = () => {
+    const socket = new WebSocket("ws://localhost:8080");
+    if (socket.readyState === 0) {
+      console.log(`WS State: ${socket.readyState} connecting `);
+    }
+
+    socket.onopen = msg => {
+      console.log("WS State:", msg.type, socket.readyState);
+      socket.send("Client Connected");
+    };
+  };
 
   getCurrentStockData = ticker => {
     const baseUrl = "https://api.iextrading.com/1.0/stock/";
