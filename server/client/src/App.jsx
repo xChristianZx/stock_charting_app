@@ -4,6 +4,8 @@ import WatchList from "./containers/WatchList/WatchList";
 import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
 
+const socket = new WebSocket("ws://localhost:5000");
+
 class App extends Component {
   state = {
     isLoading: true,
@@ -16,8 +18,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // const stocksArray = [{ ticker: "AAPL" }, { ticker: "GE" }];
-    // this.setState({ stocksArray });
     this.wsSetup();
   }
 
@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   wsSetup = () => {
-    const socket = new WebSocket("ws://localhost:8080");
+    //Connecting
     if (socket.readyState === 0) {
       console.log(
         `WS State: ${socket.readyState}\nconnecting to ${socket.url} ${
@@ -39,12 +39,17 @@ class App extends Component {
 
     socket.onopen = msg => {
       console.log("WS State:", msg.type, socket.readyState);
-      socket.send("Client Connected");
+      const openRes = JSON.stringify({
+        type: "message",
+        data: "Client Connected"
+      });
+      socket.send(openRes);
     };
 
     socket.onmessage = msg => {
       // console.log(msg);
       const payload = JSON.parse(msg.data);
+      console.log("payload", payload);
       const list = payload.map(item => item.symbol);
       console.log("DBWL: ", list);
       this.setState({ stocksArray: list });
@@ -96,9 +101,18 @@ class App extends Component {
     this.setState({ focus: id });
   };
 
+  wsNewTickerSend = symbol => {
+    const newSymbol = { type: "addSymbol", data: symbol };
+    const rSym = JSON.stringify(newSymbol);
+    console.log(newSymbol);
+    console.log(rSym);
+    socket.send(rSym);
+  };
+
   handleTickerSubmit = e => {
     e.preventDefault();
     const newTicker = this.state.inputValue.toUpperCase();
+    this.wsNewTickerSend(newTicker);
     this.setState(prevState => ({
       stocksArray: [...prevState.stocksArray, newTicker],
       inputValue: ""

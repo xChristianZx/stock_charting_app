@@ -7,8 +7,9 @@ const WebSocket = require("ws");
 const http = require("http");
 
 const app = express();
+//Server is a separate http server to bind app to
 const server = http.createServer(app);
-const wsServer = new WebSocket.Server({ port: 8080 });
+const wsServer = new WebSocket.Server({ server });
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI), { useMongoClient: true };
@@ -16,7 +17,7 @@ mongoose.connect(keys.mongoURI), { useMongoClient: true };
 const Stock = require("./models/Stocks");
 
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.json([{ express: "was here" }, { twelve: "12" }]);
@@ -42,7 +43,6 @@ wsServer.broadcast = function broadcast(data) {
 
 //Server to Client Connection
 wsServer.on("connection", ws => {
-  
   //Populate clients stocksArray state
   Stock.find({}, (err, stocks) => {
     if (err) {
@@ -54,7 +54,20 @@ wsServer.on("connection", ws => {
   // ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));
 
   ws.on("message", msg => {
+    const payload = JSON.parse(msg);
     console.log("Received: ", msg);
+    console.log("Received: ", payload, typeof payload);
+    console.log("Received: ", payload.data);
+
+    if (payload.type === "addSymbol") {
+      console.log("WEeee");
+      const newStock = { symbol: payload.data };
+      Stock.create(newStock, err => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
   });
 
   ws.on("close", (code, reason) => {
