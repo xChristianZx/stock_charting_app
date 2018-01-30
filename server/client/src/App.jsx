@@ -49,10 +49,13 @@ class App extends Component {
     socket.onmessage = msg => {
       // console.log(msg);
       const payload = JSON.parse(msg.data);
-      console.log("payload", payload);
-      const list = payload.map(item => item.symbol);
-      console.log("DBWL: ", list);
-      this.setState({ stocksArray: list });
+      if (payload.type === "data") {
+        const list = payload.data.map(item => item.symbol);
+        console.log("DBWL: ", list);
+        this.setState({ stocksArray: list });
+      } else {
+        console.log("Server: ", payload.data);
+      }
     };
 
     socket.onclose = msg => {

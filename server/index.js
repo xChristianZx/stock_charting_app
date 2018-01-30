@@ -43,15 +43,18 @@ wsServer.broadcast = function broadcast(data) {
 
 //Server to Client Connection
 wsServer.on("connection", ws => {
+  ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));
+
   //Populate clients stocksArray state
   Stock.find({}, (err, stocks) => {
     if (err) {
       console.log(err);
     } else {
-      ws.send(JSON.stringify(stocks));
+      const watchlistDB = { type: "data", data: stocks };
+      console.log(watchlistDB);
+      ws.send(JSON.stringify(watchlistDB));
     }
   });
-  // ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));
 
   ws.on("message", msg => {
     const payload = JSON.parse(msg);
