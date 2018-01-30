@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   wsSetup = () => {
-    //Connecting
+    /* CONNECTING */
     if (socket.readyState === 0) {
       console.log(
         `WS State: ${socket.readyState}\nconnecting to ${socket.url} ${
@@ -59,9 +59,18 @@ class App extends Component {
       console.log("WebSocket Connection Close:", msg);
     };
 
+    socket.onerror = err => {
+      console.log("Error:", err);
+    };
+
     window.addEventListener("beforeunload", () => {
       socket.close();
     });
+  };
+
+  wsNewTickerSend = symbol => {
+    const newSymbol = { type: "addSymbol", data: symbol };
+    socket.send(JSON.stringify(newSymbol));
   };
 
   getCurrentStockData = ticker => {
@@ -101,14 +110,6 @@ class App extends Component {
     this.setState({ focus: id });
   };
 
-  wsNewTickerSend = symbol => {
-    const newSymbol = { type: "addSymbol", data: symbol };
-    const rSym = JSON.stringify(newSymbol);
-    console.log(newSymbol);
-    console.log(rSym);
-    socket.send(rSym);
-  };
-
   handleTickerSubmit = e => {
     e.preventDefault();
     const newTicker = this.state.inputValue.toUpperCase();
@@ -136,7 +137,7 @@ class App extends Component {
             handleTickerSubmit={this.handleTickerSubmit}
           />
           <div className="charts-container loading">
-            <h2 className="loading-header">Select a stock</h2>
+            <h2 className="loading-header">Select a stock from Watchlist</h2>
           </div>
         </div>
       );

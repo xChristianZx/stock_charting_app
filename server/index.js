@@ -55,13 +55,11 @@ wsServer.on("connection", ws => {
 
   ws.on("message", msg => {
     const payload = JSON.parse(msg);
-    console.log("Received: ", msg);
-    console.log("Received: ", payload, typeof payload);
     console.log("Received: ", payload.data);
 
     if (payload.type === "addSymbol") {
-      console.log("WEeee");
       const newStock = { symbol: payload.data };
+      console.log(`${newStock} added to DB`);
       Stock.create(newStock, err => {
         if (err) {
           console.log(err);
