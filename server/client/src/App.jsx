@@ -90,7 +90,7 @@ class App extends Component {
         // console.log(ticker, payload);
         const data = payload.data;
         this.setState({
-          currentStockData: data,
+          chartStockData: data,
           currentTicker: ticker,
           isLoading: false
         });

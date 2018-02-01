@@ -16,10 +16,14 @@ const ListItem = props => {
       <tr
         className="item-row"
         key={i}
-        // onClick={fetchTicker.bind(this, item.symbol, i)}
-        onDoubleClick={deleteTicker.bind(this, item.symbol)}
+        onClick={() => fetchTicker(item.symbol, i)}
       >
-        <td className="ticker">{item.symbol}</td>
+        <td className="ticker">
+          {item.symbol}
+          <button className="delete" onClick={() => deleteTicker(item.symbol)}>
+            x
+          </button>
+        </td>
         <td className="price">{item.price}</td>
       </tr>
     );

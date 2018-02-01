@@ -27,7 +27,7 @@ table {
 
 tr.header-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 thead {
@@ -43,10 +43,12 @@ th {
 th.ticker {
   border-right: 1px solid black;
   width: 40%;
+  text-align: left;
 }
 
 th.price {
   width: 60%;
+  text-align: right;
 }
 
 tbody {
@@ -55,7 +57,7 @@ tbody {
   width: 100%;
   & tr.body-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     border-bottom: 1px solid black;
   }
 }
@@ -68,10 +70,27 @@ td {
     border-right: 1px solid black;
     width: 40%;
     text-align: left;
+    & .delete {
+      display: none;
+      width: 10%;
+      text-align: center;
+    }
+    &:hover {
+      display: flex;
+      flex: row nowrap;
+      justify-content: space-between;
+      .delete {
+        display: inline;
+        &:hover {
+          background-color: grey;
+          border-radius: 50%;
+        }
+      }
+    }
   }
 
   &.price {
-    width: 60%;
+    width: 50%;
     text-align: right;
   }
 }
