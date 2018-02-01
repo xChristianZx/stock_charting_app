@@ -67,30 +67,18 @@ td {
   font-size: 1.6rem;
 
   &.ticker {
+    display: flex;
+    justify-content: space-between;
     border-right: 1px solid black;
     width: 40%;
     text-align: left;
     & .delete {
-      display: none;
-      width: 10%;
       text-align: center;
-    }
-    &:hover {
-      display: flex;
-      flex: row nowrap;
-      justify-content: space-between;
-      .delete {
-        display: inline;
-        &:hover {
-          background-color: grey;
-          border-radius: 50%;
-        }
-      }
     }
   }
 
   &.price {
-    width: 50%;
+    width: 60%;
     text-align: right;
   }
 }

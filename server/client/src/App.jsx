@@ -116,11 +116,16 @@ class App extends Component {
   fetchTicker = (ticker, id) => {
     this.getChartStockData(ticker);
     this.setState({ focus: id });
+    console.log("CLICK");
   };
 
   handleTickerSubmit = e => {
     e.preventDefault();
-    const newTicker = this.state.inputValue.toUpperCase();
+    if (this.state.inputValue === "") {
+      console.log("Cannot submit empty string");
+      return;
+    }
+    const newTicker = this.state.inputValue.trim().toUpperCase();
     this.wsNewTicker(newTicker);
     this.setState(prevState => ({
       stocksArray: [...prevState.stocksArray, newTicker],
@@ -167,6 +172,7 @@ class App extends Component {
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}
             handleTickerSubmit={this.handleTickerSubmit}
+            deleteTicker={this.deleteTicker}
           />
           <Charts
             data={this.state.chartStockData}

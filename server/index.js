@@ -51,13 +51,17 @@ wsServer.on("connection", ws => {
       console.log(err);
     } else {
       const watchlistDB = { type: "data", data: stocks };
-      console.log(watchlistDB);
+      console.log("Current WL:", watchlistDB);
       ws.send(JSON.stringify(watchlistDB));
     }
   });
 
   ws.on("message", msg => {
     const payload = JSON.parse(msg);
+    if (payload.data === "" || payload.data === null) {
+      console.log("Cannot submit empty or undefined entry");
+      return;
+    }
     console.log("Received: ", payload.data);
 
     if (payload.type === "addSymbol") {
