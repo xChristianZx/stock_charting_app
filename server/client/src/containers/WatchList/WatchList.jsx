@@ -25,6 +25,7 @@ class WatchList extends Component {
             stocksArray={this.props.stocksArray}
             stocksArrayData={this.props.stocksArrayData}
             fetchTicker={this.props.fetchTicker}
+            deleteTicker={this.props.deleteTicker}
           />
 
           <AddTicker
@@ -42,7 +43,7 @@ class WatchList extends Component {
       <div className="watchlist-container">
         <table className="list">
           <thead>
-            <tr className="wl-header-row" >
+            <tr className="wl-header-row">
               <th>WatchList</th>
             </tr>
             <tr className="header-row">

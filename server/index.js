@@ -62,10 +62,22 @@ wsServer.on("connection", ws => {
 
     if (payload.type === "addSymbol") {
       const newStock = { symbol: payload.data };
-      console.log(`${newStock} added to DB`);
       Stock.create(newStock, err => {
         if (err) {
           console.log(err);
+        } else {
+          console.log(`${payload.data} added to DB`);
+        }
+      });
+    }
+
+    if (payload.type === "removeSymbol") {
+      console.log("REMOVING FROM DB:", payload.data);
+      Stock.remove({ symbol: payload.data }, err => {
+        if (err) {
+          console.log("Mongoose Err:", err);
+        } else {
+          console.log(`${payload.data} has been removed`);
         }
       });
     }

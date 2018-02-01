@@ -8,13 +8,13 @@ const socket = new WebSocket("ws://localhost:5000");
 
 class App extends Component {
   state = {
-    isLoading: true,
     stocksArray: [],
     stocksArrayData: [],
+    currentTicker: "",
+    chartStockData: [],
     focus: null,
     inputValue: "",
-    currentTicker: "",
-    currentStockData: []
+    isLoading: true
   };
 
   componentDidMount() {
@@ -39,11 +39,11 @@ class App extends Component {
 
     socket.onopen = msg => {
       console.log("WS State:", msg.type, socket.readyState);
-      const openRes = JSON.stringify({
+      const openResponse = JSON.stringify({
         type: "message",
         data: "Client Connected"
       });
-      socket.send(openRes);
+      socket.send(openResponse);
     };
 
     socket.onmessage = msg => {
@@ -71,12 +71,17 @@ class App extends Component {
     });
   };
 
-  wsNewTickerSend = symbol => {
+  wsNewTicker = symbol => {
     const newSymbol = { type: "addSymbol", data: symbol };
     socket.send(JSON.stringify(newSymbol));
   };
 
-  getCurrentStockData = ticker => {
+  wsRemoveTicker = symbol => {
+    const delSymbol = { type: "removeSymbol", data: symbol };
+    socket.send(JSON.stringify(delSymbol));
+  };
+
+  getChartStockData = ticker => {
     const baseUrl = "https://api.iextrading.com/1.0/stock/";
     const compUrl = `${baseUrl}${ticker}/chart/1y`;
 
@@ -109,14 +114,14 @@ class App extends Component {
   };
 
   fetchTicker = (ticker, id) => {
-    this.getCurrentStockData(ticker);
+    this.getChartStockData(ticker);
     this.setState({ focus: id });
   };
 
   handleTickerSubmit = e => {
     e.preventDefault();
     const newTicker = this.state.inputValue.toUpperCase();
-    this.wsNewTickerSend(newTicker);
+    this.wsNewTicker(newTicker);
     this.setState(prevState => ({
       stocksArray: [...prevState.stocksArray, newTicker],
       inputValue: ""
@@ -125,6 +130,13 @@ class App extends Component {
 
   handleTickerChange = e => {
     this.setState({ inputValue: e.target.value });
+  };
+
+  deleteTicker = symbol => {
+    this.setState(prevState => ({
+      stocksArray: prevState.stocksArray.filter(item => item !== symbol)
+    }));
+    this.wsRemoveTicker(symbol);
   };
 
   onRender = () => {
@@ -138,6 +150,7 @@ class App extends Component {
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}
             handleTickerSubmit={this.handleTickerSubmit}
+            deleteTicker={this.deleteTicker}
           />
           <div className="charts-container loading">
             <h2 className="loading-header">Select a stock from Watchlist</h2>
@@ -156,7 +169,7 @@ class App extends Component {
             handleTickerSubmit={this.handleTickerSubmit}
           />
           <Charts
-            data={this.state.currentStockData}
+            data={this.state.chartStockData}
             ticker={this.state.currentTicker}
           />
         </div>
