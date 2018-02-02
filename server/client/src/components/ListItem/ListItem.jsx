@@ -1,4 +1,5 @@
 import React from "react";
+import FaClose from "react-icons/lib/fa/close";
 import "./ListItem.css";
 
 const ListItem = props => {
@@ -16,10 +17,10 @@ const ListItem = props => {
     return (
       <tr className="item-row" key={i}>
         <td className="ticker" onClick={() => fetchTicker(item.symbol, i)}>
-          {item.symbol}{" "}
-          <button className="delete" onClick={() => deleteTicker(item.symbol)}>
-            X
-          </button>
+          {item.symbol}
+        </td>
+        <td className="delete">
+          <FaClose onClick={() => deleteTicker(item.symbol)} />
         </td>
         <td className="price">{item.price}</td>
       </tr>

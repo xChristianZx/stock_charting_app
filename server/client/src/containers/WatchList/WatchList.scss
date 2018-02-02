@@ -37,7 +37,7 @@ thead {
 
 th {
   padding: 0.5rem 1rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 th.ticker {
@@ -69,11 +69,27 @@ td {
   &.ticker {
     display: flex;
     justify-content: space-between;
-    border-right: 1px solid black;
-    width: 40%;
+    width: 30%;
     text-align: left;
-    & .delete {
-      text-align: center;
+  }
+
+  &.delete {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    width: 10%;
+    text-align: center;
+    border-right: 1px solid black;
+    & svg {
+      visibility: hidden;
+      color: rgb(77, 77, 77);
+      font-size: 1.2rem;
+    }
+    &:hover {
+      & svg {
+        visibility: visible;
+        border-radius: 50%;
+      }
     }
   }
 
