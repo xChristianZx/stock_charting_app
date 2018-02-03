@@ -20,26 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.json([{ express: "was here" }, { twelve: "12" }]);
-  wsServer.broadcast(JSON.stringify({ msg: "HELLO MOTO" }));
+  res.json([{ express: "was here" }, { twelve: "12" }]);  
 });
-
-app.get("/data", (req, res) => {
-  console.log(req.body);
-  Stock.remove({}, err => console.log(err));
-  const apple = new Stock({ symbol: "AAPL" }).save();
-  const fb = new Stock({ symbol: "FB" }).save();
-  res.send("Goodjob");
-});
-
-// Broadcast Function
-wsServer.broadcast = function broadcast(data) {
-  wsServer.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
-  });
-};
 
 //Server to Client Connection
 wsServer.on("connection", ws => {
@@ -62,7 +44,6 @@ wsServer.on("connection", ws => {
       console.log("Cannot submit empty or undefined entry");
       return;
     }
-    console.log("Received: ", payload.data);
 
     if (payload.type === "addSymbol") {
       const newStock = { symbol: payload.data };
@@ -70,6 +51,13 @@ wsServer.on("connection", ws => {
         if (err) {
           console.log(err);
         } else {
+          wsServer.clients.forEach(client => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+              client.send(
+                JSON.stringify({ type: "add_stock", data: newStock })
+              );
+            }
+          });
           console.log(`${payload.data} added to DB`);
         }
       });
@@ -77,10 +65,18 @@ wsServer.on("connection", ws => {
 
     if (payload.type === "removeSymbol") {
       console.log("REMOVING FROM DB:", payload.data);
-      Stock.remove({ symbol: payload.data }, err => {
+      const removeStock = { symbol: payload.data };
+      Stock.remove(removeStock, err => {
         if (err) {
           console.log("Mongoose Err:", err);
         } else {
+          wsServer.clients.forEach(client => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+              client.send(
+                JSON.stringify({ type: "remove_stock", data: removeStock })
+              );
+            }
+          });
           console.log(`${payload.data} has been removed`);
         }
       });

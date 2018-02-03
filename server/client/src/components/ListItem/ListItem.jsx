@@ -5,6 +5,10 @@ import "./ListItem.css";
 const ListItem = props => {
   const { stocksArrayData, fetchTicker, deleteTicker } = props;
 
+  const padNum = number => {
+    return Number.parseFloat(number).toFixed(2);
+  };
+
   if (!stocksArrayData) {
     return (
       <tr>
@@ -22,7 +26,7 @@ const ListItem = props => {
         <td className="delete">
           <FaClose onClick={() => deleteTicker(item.symbol)} />
         </td>
-        <td className="price">{item.price}</td>
+        <td className="price">{padNum(item.price)}</td>
       </tr>
     );
   });

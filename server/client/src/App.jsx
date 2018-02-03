@@ -46,15 +46,32 @@ class App extends Component {
       socket.send(openResponse);
     };
 
-    socket.onmessage = msg => {
-      // console.log(msg);
+    socket.onmessage = msg => {      
       const payload = JSON.parse(msg.data);
-      if (payload.type === "data") {
-        const list = payload.data.map(item => item.symbol);
-        console.log("DBWL: ", list);
-        this.setState({ stocksArray: list });
-      } else {
-        console.log("Server: ", payload.data);
+      switch (payload.type) {
+        case "data":
+          const list = payload.data.map(item => item.symbol);
+          console.log("DBWL: ", list);
+          this.setState({ stocksArray: list });
+          break;
+        case "add_stock":
+          const newTicker = payload.data.symbol;
+          this.setState(prevState => ({
+            stocksArray: [...prevState.stocksArray, newTicker]
+          }));
+          console.log("Server: A stock was added", newTicker);
+          break;
+        case "remove_stock":
+          const removeTicker = payload.data.symbol;
+          this.setState(prevState => ({
+            stocksArray: prevState.stocksArray.filter(
+              ticker => ticker !== removeTicker
+            )
+          }));
+          console.log("Server: A stock was REMOVED", removeTicker);
+          break;
+        default:
+          console.log("Server: ", payload.data);
       }
     };
 
