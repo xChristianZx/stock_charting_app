@@ -3,6 +3,7 @@ import "./App.css";
 import WatchList from "./containers/WatchList/WatchList";
 import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
+import _ from "lodash";
 
 const socket = new WebSocket("ws://localhost:5000");
 
@@ -46,7 +47,7 @@ class App extends Component {
       socket.send(openResponse);
     };
 
-    socket.onmessage = msg => {      
+    socket.onmessage = msg => {
       const payload = JSON.parse(msg.data);
       switch (payload.type) {
         case "data":
@@ -130,6 +131,27 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  tickerValidation = ticker => {
+    const baseUrl = "https://api.iextrading.com/1.0/tops/";
+    const compUrl = `${baseUrl}?symbols=${ticker}`;
+
+    Axios.get(compUrl)
+      .then(payload => {
+        const data = payload.data;
+        console.log("TickerCheck:", payload);
+        if (_.isEmpty(payload.data[0])) {
+          alert("Error: Invalid symbol or problem with data provider");
+        } else {
+          this.wsNewTicker(ticker);
+          this.setState(prevState => ({
+            stocksArray: [...prevState.stocksArray, ticker],
+            inputValue: ""
+          }));
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
   fetchTicker = (ticker, id) => {
     this.getChartStockData(ticker);
     this.setState({ focus: id });
@@ -143,11 +165,7 @@ class App extends Component {
       return;
     }
     const newTicker = this.state.inputValue.trim().toUpperCase();
-    this.wsNewTicker(newTicker);
-    this.setState(prevState => ({
-      stocksArray: [...prevState.stocksArray, newTicker],
-      inputValue: ""
-    }));
+    this.tickerValidation(newTicker);
   };
 
   handleTickerChange = e => {
