@@ -1,0 +1,12 @@
+.footer-container {
+  background: #636363;
+  margin-top: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.75);
+  width: 100%;
+  text-align: center; }
+  .footer-container p {
+    font-size: 1.2rem;
+    margin: 0.5rem; }
+    .footer-container p a {
+      text-decoration: none;
+      color: white; }

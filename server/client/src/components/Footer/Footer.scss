@@ -1,0 +1,15 @@
+.footer-container {
+  background: rgb(99, 99, 99);
+  margin-top: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.75);
+  width: 100%;
+  text-align: center;
+  & p {
+    font-size: 1.2rem;
+    margin: 0.5rem;
+    & a {
+      text-decoration: none;
+      color: white;
+    }
+  }
+}

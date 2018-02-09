@@ -6,12 +6,14 @@
   height: 7vh;
   border-bottom: 1px solid black;
   background: white;
+  margin-bottom: auto;
 }
 
-.logo-wrapper {
-  margin-left: 5rem;
+.logo-wrapper {  
+  margin-left: 8rem;
 }
 
-svg {
-  font-size: 3rem;
+.logo-name svg {
+  font-size: 3rem; 
+  padding: 1rem;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 import WatchList from "./containers/WatchList/WatchList";
 import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
@@ -182,9 +183,7 @@ class App extends Component {
   render() {
     return (
       <div className="page-wrapper">
-        <div className="navbar-wrapper">
-          <NavBar />
-        </div>
+        <NavBar />
         <div className="App">
           <WatchList
             stocksArray={this.state.stocksArray}
@@ -206,6 +205,7 @@ class App extends Component {
             />
           )}
         </div>
+        <Footer />
       </div>
     );
   }

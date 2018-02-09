@@ -6,10 +6,6 @@
   height: 100vh;
   width: 100vw; }
 
-.navbar-wrapper {
-  width: 100vw;
-  margin-bottom: 2rem; }
-
 .App {
   display: flex;
   flex-flow: row nowrap;
@@ -18,7 +14,7 @@
   width: 80vw;
   min-height: 70vh;
   padding: 1rem;
-  margin-top: 2rem;
+  margin: 0;
   border: 1px solid black;
   border-radius: 25px;
   box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.65);
