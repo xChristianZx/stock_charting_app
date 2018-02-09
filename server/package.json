@@ -16,8 +16,9 @@
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
     "express": "^4.16.2",
-    "mongoose": "^5.0.2",
-    "nodemon": "^1.14.11",
+    "mongoose": "^5.0.4",
+    "nodemon": "^1.14.12",
+    "react-icons": "^2.2.7",
     "ws": "^4.0.0"
   }
 }
