@@ -9,7 +9,7 @@ td {
 
   &.add-ticker {
     border-right: 1px solid black;
-    width: 40%;
+    width: 50%;
     text-align: left;   
     padding: none; 
     & input {
@@ -19,7 +19,7 @@ td {
   }
 
   &.filler {
-    width: 60%;
+    width: 50%;
     text-align: right;
   }
 }

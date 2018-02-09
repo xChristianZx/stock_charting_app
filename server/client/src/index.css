@@ -3,7 +3,7 @@ html {
   height: 100%; }
 
 body {
-  background-color: #b6b6b6;
+  background-color: gainsboro;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;

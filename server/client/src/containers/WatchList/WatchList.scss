@@ -1,7 +1,7 @@
 .watchlist-container {
   border: 1px solid black;
   background: rgb(172, 172, 172);
-  margin: 2rem;
+  margin: 2rem 1.5rem;
   min-height: 40vh;
   min-width: 20vw;
   flex-grow: 0 1 auto;
@@ -10,7 +10,6 @@
 table {
   display: flex;
   flex-flow: column nowrap;
-  // border: 1px solid red;
   width: 100%;
   background: rgb(230, 230, 230);
 }
@@ -42,12 +41,12 @@ th {
 
 th.ticker {
   border-right: 1px solid black;
-  width: 40%;
+  width: 50%;
   text-align: left;
 }
 
 th.price {
-  width: 60%;
+  width: 50%;
   text-align: right;
 }
 
@@ -69,7 +68,7 @@ td {
   &.ticker {
     display: flex;
     justify-content: space-between;
-    width: 30%;
+    width: 40%;
     text-align: left;
   }
 
@@ -94,7 +93,7 @@ td {
   }
 
   &.price {
-    width: 60%;
+    width: 50%;
     text-align: right;
   }
 }
