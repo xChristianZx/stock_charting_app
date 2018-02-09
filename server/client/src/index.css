@@ -5,7 +5,7 @@ html {
 body {
   background-color: #b6b6b6;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   margin: 0;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import NavBar from "./components/NavBar/NavBar";
 import WatchList from "./containers/WatchList/WatchList";
 import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
@@ -101,7 +102,7 @@ class App extends Component {
 
   getChartStockData = ticker => {
     const baseUrl = "https://api.iextrading.com/1.0/stock/";
-    const compUrl = `${baseUrl}${ticker}/chart/1y`;
+    const compUrl = `${baseUrl}${ticker}/chart/5y`;
 
     Axios.get(compUrl)
       .then(payload => {
@@ -125,7 +126,7 @@ class App extends Component {
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        console.log("StocksArrayData:", payload);
+        // console.log("StocksArrayData:", payload);
         this.setState({ stocksArrayData: data });
       })
       .catch(err => console.log(err));
@@ -138,8 +139,8 @@ class App extends Component {
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        console.log("TickerCheck:", payload);
-        if (_.isEmpty(payload.data[0])) {
+        // console.log("TickerCheck:", payload);
+        if (_.isEmpty(data[0])) {
           alert("Error: Invalid symbol or problem with data provider");
         } else {
           this.wsNewTicker(ticker);
@@ -155,13 +156,12 @@ class App extends Component {
   fetchTicker = (ticker, id) => {
     this.getChartStockData(ticker);
     this.setState({ focus: id });
-    console.log("CLICK");
   };
 
   handleTickerSubmit = e => {
     e.preventDefault();
     if (this.state.inputValue === "") {
-      console.log("Cannot submit empty string");
+      alert("Cannot submit empty string");
       return;
     }
     const newTicker = this.state.inputValue.trim().toUpperCase();
@@ -179,47 +179,35 @@ class App extends Component {
     this.wsRemoveTicker(symbol);
   };
 
-  onRender = () => {
-    if (this.state.isLoading) {
-      return (
-        <div className="App">
-          <WatchList
-            stocksArray={this.state.stocksArray}
-            stocksArrayData={this.state.stocksArrayData}
-            inputValue={this.state.inputValue}
-            fetchTicker={this.fetchTicker}
-            handleTickerChange={this.handleTickerChange}
-            handleTickerSubmit={this.handleTickerSubmit}
-            deleteTicker={this.deleteTicker}
-          />
-          <div className="charts-container loading">
-            <h2 className="loading-header">Select a stock from Watchlist</h2>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="App">
-          <WatchList
-            stocksArray={this.state.stocksArray}
-            stocksArrayData={this.state.stocksArrayData}
-            inputValue={this.state.inputValue}
-            fetchTicker={this.fetchTicker}
-            handleTickerChange={this.handleTickerChange}
-            handleTickerSubmit={this.handleTickerSubmit}
-            deleteTicker={this.deleteTicker}
-          />
-          <Charts
-            data={this.state.chartStockData}
-            ticker={this.state.currentTicker}
-          />
-        </div>
-      );
-    }
-  };
-
   render() {
-    return this.onRender();
+    return (
+      <div className="page-wrapper">
+        <div className="navbar-wrapper">
+          <NavBar />
+        </div>
+        <div className="App">
+          <WatchList
+            stocksArray={this.state.stocksArray}
+            stocksArrayData={this.state.stocksArrayData}
+            inputValue={this.state.inputValue}
+            fetchTicker={this.fetchTicker}
+            handleTickerChange={this.handleTickerChange}
+            handleTickerSubmit={this.handleTickerSubmit}
+            deleteTicker={this.deleteTicker}
+          />
+          {this.state.isLoading ? (
+            <div className="charts-container loading">
+              <h2 className="loading-header">Select a stock from Watchlist</h2>
+            </div>
+          ) : (
+            <Charts
+              data={this.state.chartStockData}
+              ticker={this.state.currentTicker}
+            />
+          )}
+        </div>
+      </div>
+    );
   }
 }
 

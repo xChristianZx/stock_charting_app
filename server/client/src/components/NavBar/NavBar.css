@@ -1,0 +1,11 @@
+.navbar-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 7vh;
+  border-bottom: 1px solid black;
+  background: white; }
+
+.logo-wrapper {
+  margin-left: 5rem; }
