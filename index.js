@@ -19,8 +19,6 @@ mongoose.connect(keys.mongoURI), { useMongoClient: true };
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.get("/", (req, res) => {});
-
 //Server to Client Connection
 wsServer.on("connection", ws => {
   ws.send(JSON.stringify({ type: "message", data: "Hello Client" }));

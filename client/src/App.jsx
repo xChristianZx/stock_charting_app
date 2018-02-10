@@ -127,8 +127,8 @@ class App extends Component {
   getStocksArrayData = listArr => {
     const tickerArr = listArr.map(item => item).join(",");
 
-    const baseUrl = "https://api.iextrading.com/1.0/tops/";
-    const compUrl = `${baseUrl}last?symbols=${tickerArr}`;
+    const baseUrl = "https://api.iextrading.com/1.0/tops/last";
+    const compUrl = `${baseUrl}?symbols=${tickerArr}`;
 
     Axios.get(compUrl)
       .then(payload => {
@@ -146,7 +146,7 @@ class App extends Component {
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        console.log("TickerCheck:", payload);
+        // console.log("TickerCheck:", payload);
         if (_.isEmpty(data[0])) {
           alert("Error: Invalid symbol or problem with data provider");
         } else {
@@ -172,7 +172,6 @@ class App extends Component {
       return;
     }
     const newTicker = this.state.inputValue.trim().toUpperCase();
-    console.log("newTicker: ", newTicker, typeof newTicker);
     this.tickerValidation(newTicker);
   };
 
