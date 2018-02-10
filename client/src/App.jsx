@@ -34,6 +34,12 @@ class App extends Component {
     }
   }
 
+  componentWillUnmount() {
+    socket.onclose = msg => {
+      console.log("WebSocket Connection Close:", msg);
+    };
+  }
+
   wsSetup = () => {
     /* CONNECTING */
     if (socket.readyState === 0) {
@@ -80,10 +86,6 @@ class App extends Component {
         default:
           console.log("Server: ", payload.data);
       }
-    };
-
-    socket.onclose = msg => {
-      console.log("WebSocket Connection Close:", msg);
     };
 
     socket.onerror = err => {
@@ -144,7 +146,7 @@ class App extends Component {
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        // console.log("TickerCheck:", payload);
+        console.log("TickerCheck:", payload);
         if (_.isEmpty(data[0])) {
           alert("Error: Invalid symbol or problem with data provider");
         } else {
