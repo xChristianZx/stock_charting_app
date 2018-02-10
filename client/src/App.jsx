@@ -9,7 +9,7 @@ import _ from "lodash";
 
 const socket =
   process.env.NODE_ENV === "production"
-    ? new WebSocket("https://intense-eyrie-24761.herokuapp.com/")
+    ? new WebSocket("ws://intense-eyrie-24761.herokuapp.com/")
     : new WebSocket("ws://localhost:5000");
 
 class App extends Component {
