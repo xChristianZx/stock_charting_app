@@ -19,9 +19,9 @@ mongoose.connect(keys.mongoURI), { useMongoClient: true };
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.json([{ express: "was here" }, { twelve: "12" }]);
-});
+// app.get("/", (req, res) => {
+//   res.json([{ express: "was here" }, { twelve: "12" }]);
+// });
 
 //Server to Client Connection
 wsServer.on("connection", ws => {
