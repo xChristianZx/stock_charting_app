@@ -7,7 +7,10 @@ import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
 import _ from "lodash";
 
-const socket = new WebSocket("ws://localhost:5000");
+const socket =
+  process.env.NODE_ENV === "production"
+    ? new WebSocket("https://intense-eyrie-24761.herokuapp.com/")
+    : new WebSocket("ws://localhost:5000");
 
 class App extends Component {
   state = {
@@ -21,6 +24,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    console.log("Dev Environment: ", process.env.NODE_ENV);
     this.wsSetup();
   }
 
