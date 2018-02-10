@@ -140,7 +140,7 @@ class App extends Component {
   };
 
   tickerValidation = ticker => {
-    const baseUrl = "https://api.iextrading.com/1.0/tops/";
+    const baseUrl = "https://api.iextrading.com/1.0/tops/last";
     const compUrl = `${baseUrl}?symbols=${ticker}`;
 
     Axios.get(compUrl)
@@ -172,6 +172,7 @@ class App extends Component {
       return;
     }
     const newTicker = this.state.inputValue.trim().toUpperCase();
+    console.log("newTicker: ", newTicker, typeof newTicker);
     this.tickerValidation(newTicker);
   };
 
