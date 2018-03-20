@@ -4,15 +4,15 @@ import ReactHighStock from "react-highcharts/ReactHighstock.src";
 
 class Charts extends Component {
   render() {
-    const data = this.props.data;
-    const ticker = this.props.ticker;
+    const { ticker, stats, data } = this.props;
     const dataClose = data.map(item => [Date.parse(item.date), item.close]);
     console.log("Charts Data:", data);
+    // console.log(stats);
 
     const config = {
       title: {
         align: "left",
-        text: ticker,
+        text: `${ticker} - ${stats.companyName}`,
         x: 15
       },
       rangeSelector: {

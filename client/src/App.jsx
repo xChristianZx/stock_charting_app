@@ -17,6 +17,7 @@ class App extends Component {
     stocksArray: [],
     stocksArrayData: [],
     currentTicker: "",
+    currentStockStats: null,
     chartStockData: [],
     focus: null,
     inputValue: "",
@@ -39,7 +40,7 @@ class App extends Component {
       console.log("WebSocket Connection Close:", msg);
     };
   }
-
+  //region WebSockets
   wsSetup = () => {
     /* CONNECTING */
     if (socket.readyState === 0) {
@@ -106,6 +107,7 @@ class App extends Component {
     const delSymbol = { type: "removeSymbol", data: symbol };
     socket.send(JSON.stringify(delSymbol));
   };
+  //endregion
 
   getChartStockData = ticker => {
     const baseUrl = "https://api.iextrading.com/1.0/stock/";
@@ -119,6 +121,20 @@ class App extends Component {
           chartStockData: data,
           currentTicker: ticker,
           isLoading: false
+        });
+      })
+      .catch(err => console.log(err));
+  };
+
+  getCurrentStockStats = ticker => {
+    const baseUrl = "https://api.iextrading.com/1.0/stock/";
+    const compUrl = `${baseUrl}${ticker}/stats`;
+
+    Axios.get(compUrl)
+      .then(payload => {
+        const data = payload.data;
+        this.setState({
+          currentStockStats: data
         });
       })
       .catch(err => console.log(err));
@@ -162,6 +178,7 @@ class App extends Component {
 
   fetchTicker = (ticker, id) => {
     this.getChartStockData(ticker);
+    this.getCurrentStockStats(ticker);
     this.setState({ focus: id });
   };
 
@@ -207,6 +224,7 @@ class App extends Component {
           ) : (
             <Charts
               data={this.state.chartStockData}
+              stats={this.state.currentStockStats}
               ticker={this.state.currentTicker}
             />
           )}
