@@ -1,12 +1,13 @@
 .footer-container {
-  background: rgb(172, 172, 172);
+  background: rgba(53, 56, 59, 0.75);
   margin-top: auto;
   border-top: 1px solid rgba(0, 0, 0, 0.75);
   width: 100%;
   text-align: center;
+  font-size: 1.2rem;
   & p {
-    font-size: 1.2rem;
-    margin: 0.5rem;
+    font-size: 1.2em;
+    margin: 0.5em;
     & a {
       text-decoration: none;
       color: white;

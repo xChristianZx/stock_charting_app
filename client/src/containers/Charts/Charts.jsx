@@ -7,7 +7,7 @@ class Charts extends Component {
     const data = this.props.data;
     const ticker = this.props.ticker;
     const dataClose = data.map(item => [Date.parse(item.date), item.close]);
-    // console.log("Charts Data:", data);
+    console.log("Charts Data:", data);
 
     const config = {
       title: {

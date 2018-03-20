@@ -5,12 +5,20 @@
   width: 100%;
   height: 7vh;
   border-bottom: 1px solid black;
-  background: white;
-  margin-bottom: auto; }
+  background: rgba(0, 0, 0, 0.35);
+  margin-bottom: auto;
+  font-size: 2rem; }
 
 .logo-wrapper {
+  display: flex;
+  align-items: center;
   margin-left: 8rem; }
 
-.logo-name svg {
-  font-size: 3rem;
-  padding: 1rem; }
+.logo-name {
+  color: white;
+  letter-spacing: 0.2rem;
+  font-weight: 400;
+  font-size: 1.5em; }
+  .logo-name svg {
+    font-size: 1.5em;
+    padding: 0 0.25em; }

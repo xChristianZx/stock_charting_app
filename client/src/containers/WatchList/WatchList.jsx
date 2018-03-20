@@ -7,16 +7,7 @@ class WatchList extends Component {
   renderList = () => {
     if (!this.props.stocksArrayData) {
       return (
-        <tbody>
-          <tr>
-            <td>Loading...</td>
-          </tr>
-          <AddTicker
-            inputValue={this.props.inputValue}
-            handleTickerSubmit={this.props.handleTickerSubmit}
-            handleTickerChange={this.props.handleTickerChange}
-          />
-        </tbody>
+        <p>Loading...</p>
       );
     } else {
       return (
