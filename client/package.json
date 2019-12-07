@@ -11,7 +11,7 @@
     "react-dom": "^16.6.3",
     "react-highcharts": "^16.0.2",
     "react-icons": "^2.2.7",
-    "react-scripts": "^2.1.1",
+    "react-scripts": "^3.3.0",
     "snyk": "^1.161.1"
   },
   "scripts": {
