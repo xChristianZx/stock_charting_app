@@ -12,7 +12,7 @@
     "react-highcharts": "^16.0.2",
     "react-icons": "^2.2.7",
     "react-scripts": "^2.1.1",
-    "snyk": "^1.161.1"
+    "snyk": "^1.290.1"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
