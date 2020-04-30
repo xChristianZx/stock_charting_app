@@ -12,7 +12,9 @@
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +25,8 @@
     "mongoose": "^5.4.0",
     "nodemon": "^1.18.9",
     "react-icons": "^2.2.7",
-    "ws": "^4.1.0"
-  }
+    "ws": "^4.1.0",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
