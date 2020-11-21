@@ -18,10 +18,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "concurrently": "^3.6.1",
+    "concurrently": "^5.3.0",
     "express": "^4.16.4",
     "mongoose": "^5.4.0",
-    "nodemon": "^1.18.9",
+    "nodemon": "^2.0.6",
     "react-icons": "^2.2.7",
     "ws": "^4.1.0"
   }
