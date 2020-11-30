@@ -7,6 +7,12 @@ import Charts from "./containers/Charts/Charts";
 import Axios from "axios";
 import _ from "lodash";
 
+const IEX_CLOUD_TOKEN = process.env.REACT_APP_IEX_CLOUD_TOKEN;
+const IEX_SANDBOX_TOKEN = process.env.REACT_APP_IEX_SANDBOX_TOKEN;
+
+const baseCloudUrl = 'https://cloud.iexapis.com/stable/';
+const baseSandboxUrl = 'https://sandbox.iexapis.com/stable/';
+
 const socket =
   process.env.NODE_ENV === "production"
     ? new WebSocket("wss://chart-it-z.herokuapp.com")
@@ -110,8 +116,7 @@ class App extends Component {
   //endregion
 
   getChartStockData = ticker => {
-    const baseUrl = "https://api.iextrading.com/1.0/stock/";
-    const compUrl = `${baseUrl}${ticker}/chart/5y`;
+    const compUrl = `${baseSandboxUrl}/stock/${ticker}/chart/5y?token=${IEX_SANDBOX_TOKEN}`;
 
     Axios.get(compUrl)
       .then(payload => {
@@ -127,8 +132,7 @@ class App extends Component {
   };
 
   getCurrentStockStats = ticker => {
-    const baseUrl = "https://api.iextrading.com/1.0/stock/";
-    const compUrl = `${baseUrl}${ticker}/stats`;
+    const compUrl = `${baseSandboxUrl}stock/${ticker}/stats?token=${IEX_SANDBOX_TOKEN}`;
 
     Axios.get(compUrl)
       .then(payload => {
@@ -143,8 +147,7 @@ class App extends Component {
   getStocksArrayData = listArr => {
     const tickerArr = listArr.map(item => item).join(",");
 
-    const baseUrl = "https://api.iextrading.com/1.0/tops/last";
-    const compUrl = `${baseUrl}?symbols=${tickerArr}`;
+    const compUrl = `${baseCloudUrl}tops/last?symbols=${tickerArr}&token=${IEX_CLOUD_TOKEN}`;
 
     Axios.get(compUrl)
       .then(payload => {
@@ -156,8 +159,9 @@ class App extends Component {
   };
 
   tickerValidation = ticker => {
-    const baseUrl = "https://api.iextrading.com/1.0/tops/last";
-    const compUrl = `${baseUrl}?symbols=${ticker}`;
+    const compUrl = `${baseCloudUrl}tops/last?symbols=${ticker}&token=${IEX_CLOUD_TOKEN}`;
+
+    // console.log('tickerValidation', compUrl);
 
     Axios.get(compUrl)
       .then(payload => {
