@@ -14,7 +14,10 @@ const server = http.createServer(app);
 const wsServer = new WebSocket.Server({ server });
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI), { useMongoClient: true };
+mongoose.connect(keys.mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
