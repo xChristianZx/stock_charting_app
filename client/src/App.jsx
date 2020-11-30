@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import "./App.css";
-import NavBar from "./components/NavBar/NavBar";
-import Footer from "./components/Footer/Footer";
-import WatchList from "./containers/WatchList/WatchList";
-import Charts from "./containers/Charts/Charts";
-import Axios from "axios";
-import _ from "lodash";
+import React, { Component } from 'react';
+import './App.css';
+import NavBar from './components/NavBar/NavBar';
+import Footer from './components/Footer/Footer';
+import WatchList from './containers/WatchList/WatchList';
+import Charts from './containers/Charts/Charts';
+import Axios from 'axios';
+import _ from 'lodash';
 
 const IEX_CLOUD_TOKEN = process.env.REACT_APP_IEX_CLOUD_TOKEN;
 const IEX_SANDBOX_TOKEN = process.env.REACT_APP_IEX_SANDBOX_TOKEN;
@@ -14,24 +14,24 @@ const baseCloudUrl = 'https://cloud.iexapis.com/stable/';
 const baseSandboxUrl = 'https://sandbox.iexapis.com/stable/';
 
 const socket =
-  process.env.NODE_ENV === "production"
-    ? new WebSocket("wss://chart-it-z.herokuapp.com")
-    : new WebSocket("ws://localhost:5000");
+  process.env.NODE_ENV === 'production'
+    ? new WebSocket('wss://chart-it-z.herokuapp.com')
+    : new WebSocket('ws://localhost:5000');
 
 class App extends Component {
   state = {
     stocksArray: [],
     stocksArrayData: [],
-    currentTicker: "",
+    currentTicker: '',
     currentStockStats: null,
     chartStockData: [],
     focus: null,
-    inputValue: "",
-    isLoading: true
+    inputValue: '',
+    isLoading: true,
   };
 
   componentDidMount() {
-    console.log("Dev Environment: ", process.env.NODE_ENV);
+    console.log('Dev Environment: ', process.env.NODE_ENV);
     this.wsSetup();
   }
 
@@ -43,7 +43,7 @@ class App extends Component {
 
   componentWillUnmount() {
     socket.onclose = msg => {
-      console.log("WebSocket Connection Close:", msg);
+      console.log('WebSocket Connection Close:', msg);
     };
   }
   //region WebSockets
@@ -51,17 +51,15 @@ class App extends Component {
     /* CONNECTING */
     if (socket.readyState === 0) {
       console.log(
-        `WS State: ${socket.readyState}\nconnecting to ${socket.url} ${
-          socket.protocol
-        }`
+        `WS State: ${socket.readyState}\nconnecting to ${socket.url} ${socket.protocol}`
       );
     }
 
     socket.onopen = msg => {
-      console.log("WS State:", msg.type, socket.readyState);
+      console.log('WS State:', msg.type, socket.readyState);
       const openResponse = JSON.stringify({
-        type: "message",
-        data: "Client Connected"
+        type: 'message',
+        data: 'Client Connected',
       });
       socket.send(openResponse);
     };
@@ -69,48 +67,48 @@ class App extends Component {
     socket.onmessage = msg => {
       const payload = JSON.parse(msg.data);
       switch (payload.type) {
-        case "data":
+        case 'data':
           const list = payload.data.map(item => item.symbol);
-          console.log("DBWL: ", list);
+          console.log('DBWL: ', list);
           this.setState({ stocksArray: list });
           break;
-        case "add_stock":
+        case 'add_stock':
           const newTicker = payload.data.symbol;
           this.setState(prevState => ({
-            stocksArray: [...prevState.stocksArray, newTicker]
+            stocksArray: [...prevState.stocksArray, newTicker],
           }));
-          console.log("Server: A stock was added", newTicker);
+          console.log('Server: A stock was added', newTicker);
           break;
-        case "remove_stock":
+        case 'remove_stock':
           const removeTicker = payload.data.symbol;
           this.setState(prevState => ({
             stocksArray: prevState.stocksArray.filter(
               ticker => ticker !== removeTicker
-            )
+            ),
           }));
-          console.log("Server: A stock was REMOVED", removeTicker);
+          console.log('Server: A stock was REMOVED', removeTicker);
           break;
         default:
-          console.log("Server: ", payload.data);
+          console.log('Server: ', payload.data);
       }
     };
 
     socket.onerror = err => {
-      console.log("Error:", err);
+      console.log('Error:', err);
     };
 
-    window.addEventListener("beforeunload", () => {
+    window.addEventListener('beforeunload', () => {
       socket.close();
     });
   };
 
   wsNewTicker = symbol => {
-    const newSymbol = { type: "addSymbol", data: symbol };
+    const newSymbol = { type: 'addSymbol', data: symbol };
     socket.send(JSON.stringify(newSymbol));
   };
 
   wsRemoveTicker = symbol => {
-    const delSymbol = { type: "removeSymbol", data: symbol };
+    const delSymbol = { type: 'removeSymbol', data: symbol };
     socket.send(JSON.stringify(delSymbol));
   };
   //endregion
@@ -125,7 +123,7 @@ class App extends Component {
         this.setState({
           chartStockData: data,
           currentTicker: ticker,
-          isLoading: false
+          isLoading: false,
         });
       })
       .catch(err => console.log(err));
@@ -138,21 +136,21 @@ class App extends Component {
       .then(payload => {
         const data = payload.data;
         this.setState({
-          currentStockStats: data
+          currentStockStats: data,
         });
       })
       .catch(err => console.log(err));
   };
 
   getStocksArrayData = listArr => {
-    const tickerArr = listArr.map(item => item).join(",");
+    const tickerArr = listArr.map(item => item).join(',');
 
     const compUrl = `${baseCloudUrl}tops/last?symbols=${tickerArr}&token=${IEX_CLOUD_TOKEN}`;
 
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        // console.log("StocksArrayData:", payload);
+        console.log('StocksArrayData:', payload);
         this.setState({ stocksArrayData: data });
       })
       .catch(err => console.log(err));
@@ -166,14 +164,13 @@ class App extends Component {
     Axios.get(compUrl)
       .then(payload => {
         const data = payload.data;
-        // console.log("TickerCheck:", payload);
         if (_.isEmpty(data[0])) {
-          alert("Error: Invalid symbol or problem with data provider");
+          alert('Error: Invalid symbol or problem with data provider');
         } else {
           this.wsNewTicker(ticker);
           this.setState(prevState => ({
             stocksArray: [...prevState.stocksArray, ticker],
-            inputValue: ""
+            inputValue: '',
           }));
         }
       })
@@ -188,8 +185,8 @@ class App extends Component {
 
   handleTickerSubmit = e => {
     e.preventDefault();
-    if (this.state.inputValue === "") {
-      alert("Cannot submit empty string");
+    if (this.state.inputValue === '') {
+      alert('Cannot submit empty string');
       return;
     }
     const newTicker = this.state.inputValue.trim().toUpperCase();
@@ -202,7 +199,7 @@ class App extends Component {
 
   deleteTicker = symbol => {
     this.setState(prevState => ({
-      stocksArray: prevState.stocksArray.filter(item => item !== symbol)
+      stocksArray: prevState.stocksArray.filter(item => item !== symbol),
     }));
     this.wsRemoveTicker(symbol);
   };
