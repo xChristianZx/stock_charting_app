@@ -1,94 +1,36 @@
 const mongoose = require('mongoose');
-const keys = require('./config/keys');
 const WebSocket = require('ws');
 const http = require('http');
 
+const keys = require('./config/keys');
 const { app } = require('./app');
-const Stock = require('./models/Stocks');
+const { wsService } = require('./services/websocket');
 
 //Server is a separate http server to bind app to
 const server = http.createServer(app);
 const wsServer = new WebSocket.Server({ server });
 
-mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const start = async () => {
+  if (!keys.mongoURI) {
+    throw new Error('mongoURI key must be defined');
+  }
+  try {
+    mongoose.Promise = global.Promise;
+    await mongoose.connect(keys.mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-//Websocket Server to Client Connection
-wsServer.on('connection', ws => {
-  ws.send(JSON.stringify({ type: 'message', data: 'Hello Client' }));
-  console.log('Client connected');
-  //Populate clients stocksArray state
-  Stock.find({}, (err, stocks) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const watchlistDB = { type: 'data', data: stocks };
-      console.log('Current WL:', watchlistDB);
-      ws.send(JSON.stringify(watchlistDB));
-    }
-  });
+    await wsService(wsServer);
 
-  ws.on('message', msg => {
-    const payload = JSON.parse(msg);
-    if (payload.data === '' || payload.data === null) {
-      console.log('Cannot submit empty or undefined entry');
-      return;
-    }
+    const PORT = process.env.PORT || 5000;
 
-    if (payload.type === 'addSymbol') {
-      const newStock = { symbol: payload.data };
-      Stock.create(newStock, err => {
-        if (err) {
-          console.log(err);
-        } else {
-          wsServer.clients.forEach(client => {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-              client.send(
-                JSON.stringify({ type: 'add_stock', data: newStock })
-              );
-            }
-          });
-          console.log(`${payload.data} added to DB`);
-        }
-      });
-    }
+    server.listen(PORT, () => {
+      console.log(`Serving on Port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-    if (payload.type === 'removeSymbol') {
-      console.log('REMOVING FROM DB:', payload.data);
-      const removeStock = { symbol: payload.data };
-      Stock.remove(removeStock, err => {
-        if (err) {
-          console.log('Mongoose Err:', err);
-        } else {
-          wsServer.clients.forEach(client => {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-              client.send(
-                JSON.stringify({ type: 'remove_stock', data: removeStock })
-              );
-            }
-          });
-          console.log(`${payload.data} has been removed`);
-        }
-      });
-    }
-  });
-
-  ws.on('close', (code, reason) => {
-    console.log(`Client Conection Closed - ${reason} code: ${code}`);
-    ws.terminate();
-  });
-
-  ws.on('error', err => {
-    console.log('Serverside WS Error', err);
-    ws.terminate();
-  });
-});
-
-const PORT = process.env.PORT || 5000;
-
-server.listen(PORT, () => {
-  console.log(`Serving on Port ${PORT}`);
-});
+start();
