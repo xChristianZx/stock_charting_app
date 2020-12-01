@@ -14,6 +14,15 @@ const start = async () => {
   if (!keys.mongoURI) {
     throw new Error('mongoURI key must be defined');
   }
+
+  if (!keys.IEX_CLOUD_TOKEN) {
+    throw new Error('IEX_CLOUD_TOKEN must be defined');
+  }
+
+  if (!keys.IEX_SANDBOX_TOKEN) {
+    throw new Error('IEX_SANDBOX_TOKEN must be defined');
+  }
+
   try {
     mongoose.Promise = global.Promise;
     await mongoose.connect(keys.mongoURI, {
