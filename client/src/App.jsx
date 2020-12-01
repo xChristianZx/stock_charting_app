@@ -76,6 +76,7 @@ class App extends Component {
           const newTicker = payload.data.symbol;
           this.setState(prevState => ({
             stocksArray: [...prevState.stocksArray, newTicker],
+            inputValue: '',
           }));
           console.log('Server: A stock was added', newTicker);
           break;
@@ -87,6 +88,10 @@ class App extends Component {
             ),
           }));
           console.log('Server: A stock was REMOVED', removeTicker);
+          break;
+        case 'error':
+          console.log('Server: ', payload.data);
+          alert(payload.data);
           break;
         default:
           console.log('Server: ', payload.data);
@@ -157,24 +162,19 @@ class App extends Component {
   };
 
   tickerValidation = ticker => {
-    const compUrl = `${baseCloudUrl}tops/last?symbols=${ticker}&token=${IEX_CLOUD_TOKEN}`;
-
-    // console.log('tickerValidation', compUrl);
-
-    Axios.get(compUrl)
+    Axios.get(`/tickervalidation`, { params: { ticker } })
       .then(payload => {
-        const data = payload.data;
-        if (_.isEmpty(data[0])) {
+        if (payload.status !== 201) {
           alert('Error: Invalid symbol or problem with data provider');
         } else {
           this.wsNewTicker(ticker);
-          this.setState(prevState => ({
-            stocksArray: [...prevState.stocksArray, ticker],
-            inputValue: '',
-          }));
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const { msg } = err.response.data;
+        console.log('tickerValidation Error: ', msg);
+        alert(msg);
+      });
   };
 
   fetchTicker = (ticker, id) => {
