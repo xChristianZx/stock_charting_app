@@ -198,9 +198,6 @@ class App extends Component {
   };
 
   deleteTicker = symbol => {
-    this.setState(prevState => ({
-      stocksArray: prevState.stocksArray.filter(item => item !== symbol),
-    }));
     this.wsRemoveTicker(symbol);
   };
 

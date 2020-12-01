@@ -1,5 +1,5 @@
+const WebSocket = require('ws');
 const Stock = require('../models/Stocks');
-
 // Websocket Server to Client Connection
 
 function wsService(wsServer) {
@@ -17,7 +17,7 @@ function wsService(wsServer) {
       }
     });
 
-    ws.on('message', msg => {
+    ws.on('message', async msg => {
       const payload = JSON.parse(msg);
       if (payload.data === '' || payload.data === null) {
         console.log('Cannot submit empty or undefined entry');
@@ -26,12 +26,15 @@ function wsService(wsServer) {
 
       if (payload.type === 'addSymbol') {
         const newStock = { symbol: payload.data };
-        Stock.create(newStock, err => {
+        await Stock.create(newStock, err => {
           if (err) {
-            console.log(err);
+            console.log('Mongoose Err:', err);
+            ws.send(
+              JSON.stringify({ type: 'error', data: 'Stock already exists' })
+            );
           } else {
             wsServer.clients.forEach(client => {
-              if (client !== ws && client.readyState === WebSocket.OPEN) {
+              if (client.readyState === WebSocket.OPEN) {
                 client.send(
                   JSON.stringify({ type: 'add_stock', data: newStock })
                 );
@@ -45,12 +48,12 @@ function wsService(wsServer) {
       if (payload.type === 'removeSymbol') {
         console.log('REMOVING FROM DB:', payload.data);
         const removeStock = { symbol: payload.data };
-        Stock.deleteOne(removeStock, err => {
+        await Stock.deleteOne(removeStock, err => {
           if (err) {
             console.log('Mongoose Err:', err);
           } else {
             wsServer.clients.forEach(client => {
-              if (client !== ws && client.readyState === WebSocket.OPEN) {
+              if (client.readyState === WebSocket.OPEN) {
                 client.send(
                   JSON.stringify({ type: 'remove_stock', data: removeStock })
                 );
