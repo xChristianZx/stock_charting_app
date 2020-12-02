@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/chart/data', async (req, res) => {
   const { ticker } = req.query;
-  const compUrl = `${baseSandboxUrl}/stock/${ticker}/chart/5y?token=${keys.IEX_SANDBOX_TOKEN}`;
+  const compUrl = `${baseCloudUrl}/stock/${ticker}/chart/2y?token=${keys.IEX_CLOUD_TOKEN}`;
 
   const iexRes = await axios.get(compUrl);
   const { data } = iexRes;
@@ -27,7 +27,7 @@ router.get('/chart/data', async (req, res) => {
 router.get('/chart/stats', async (req, res) => {
   const { ticker } = req.query;
 
-  const compUrl = `${baseSandboxUrl}stock/${ticker}/stats?token=${keys.IEX_SANDBOX_TOKEN}`;
+  const compUrl = `${baseCloudUrl}stock/${ticker}/stats?token=${keys.IEX_CLOUD_TOKEN}`;
 
   const iexRes = await axios.get(compUrl);
   const { data } = iexRes;
