@@ -1,32 +1,31 @@
-import React, { Component } from "react";
-import "./Charts.css";
-import ReactHighStock from "react-highcharts/ReactHighstock.src";
+import React, { Component } from 'react';
+import './Charts.css';
+import ReactHighStock from 'react-highcharts/ReactHighstock.src';
 
 class Charts extends Component {
   render() {
     const { ticker, stats, data } = this.props;
     const dataClose = data.map(item => [Date.parse(item.date), item.close]);
-    console.log("Charts Data:", data);
-    // console.log(stats);
+    console.log('Charts Data:', data);
 
     const config = {
       title: {
-        align: "left",
+        align: 'left',
         text: `${ticker} - ${stats.companyName}`,
-        x: 15
+        x: 15,
       },
       rangeSelector: {
-        selected: 1
+        selected: 1,
       },
       series: [
         {
-          name: "Close",
+          name: 'Close',
           data: dataClose,
           tooltip: {
-            valueDecimals: 2
-          }
-        }
-      ]
+            valueDecimals: 2,
+          },
+        },
+      ],
     };
 
     return (

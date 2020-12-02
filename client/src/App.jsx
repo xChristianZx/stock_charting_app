@@ -135,18 +135,20 @@ class App extends Component {
   };
 
   getCurrentStockStats = ticker => {
-    const compUrl = `${baseSandboxUrl}stock/${ticker}/stats?token=${IEX_SANDBOX_TOKEN}`;
-
-    Axios.get(compUrl)
+    Axios.get('/currentstats', { params: { ticker } })
       .then(payload => {
-        const data = payload.data;
+        const { data } = payload.data;
         this.setState({
           currentStockStats: data,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const { msg } = err.response.data;
+        console.log('currentStockStats Error: ', msg);
+      });
   };
 
+  // Populates Watchlist Data
   getStocksArrayData = listArr => {
     const tickerArr = listArr.map(item => item).join(',');
 
