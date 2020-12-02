@@ -20,14 +20,14 @@ const socket =
 
 class App extends Component {
   state = {
-    stocksArray: [],
-    stocksArrayData: [],
     currentTicker: '',
     currentStockStats: null,
     chartStockData: [],
     focus: null,
     inputValue: '',
     isLoading: true,
+    watchlistArr: [],
+    watchlistData: [],
   };
 
   componentDidMount() {
@@ -36,8 +36,8 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.stocksArray !== this.state.stocksArray) {
-      this.getStocksArrayData(this.state.stocksArray);
+    if (prevState.watchlistArr !== this.state.watchlistArr) {
+      this.getWatchlistData(this.state.watchlistArr);
     }
   }
 
@@ -70,12 +70,12 @@ class App extends Component {
         case 'data':
           const list = payload.data.map(item => item.symbol);
           console.log('DBWL: ', list);
-          this.setState({ stocksArray: list });
+          this.setState({ watchlistArr: list });
           break;
         case 'add_stock':
           const newTicker = payload.data.symbol;
           this.setState(prevState => ({
-            stocksArray: [...prevState.stocksArray, newTicker],
+            watchlistArr: [...prevState.watchlistArr, newTicker],
             inputValue: '',
           }));
           console.log('Server: A stock was added', newTicker);
@@ -83,7 +83,7 @@ class App extends Component {
         case 'remove_stock':
           const removeTicker = payload.data.symbol;
           this.setState(prevState => ({
-            stocksArray: prevState.stocksArray.filter(
+            watchlistArr: prevState.watchlistArr.filter(
               ticker => ticker !== removeTicker
             ),
           }));
@@ -210,8 +210,8 @@ class App extends Component {
         <NavBar />
         <div className="App">
           <WatchList
-            stocksArray={this.state.stocksArray}
-            stocksArrayData={this.state.stocksArrayData}
+            stocksArray={this.state.watchlistArr}
+            stocksArrayData={this.state.watchlistData}
             inputValue={this.state.inputValue}
             fetchTicker={this.fetchTicker}
             handleTickerChange={this.handleTickerChange}
