@@ -1,6 +1,5 @@
 const axios = require('axios');
 const express = require('express');
-const axios = require('axios');
 
 const keys = require('../config/keys');
 
@@ -22,6 +21,23 @@ router.get('/tickervalidation', async (req, res) => {
   }
 
   res.status(201).json({ msg: `${ticker}: Valid ticker symbol`, data });
+});
+
+router.get('/currentstats', async (req, res) => {
+  const { ticker } = req.query;
+
+  const compUrl = `${baseSandboxUrl}stock/${ticker}/stats?token=${keys.IEX_SANDBOX_TOKEN}`;
+
+  const iexRes = await axios.get(compUrl);
+  const { data } = iexRes;
+
+  if (data.length < 1) {
+    return res
+      .status(404)
+      .json({ msg: 'There is no data for this symbol at this times' });
+  }
+
+  res.status(201).json({ data });
 });
 
 module.exports = router;
