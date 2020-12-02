@@ -135,7 +135,7 @@ class App extends Component {
   };
 
   getCurrentStockStats = ticker => {
-    Axios.get('/currentstats', { params: { ticker } })
+    Axios.get('/chart/stats', { params: { ticker } })
       .then(payload => {
         const { data } = payload.data;
         this.setState({
