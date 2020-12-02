@@ -1,11 +1,11 @@
-import React from "react";
-import "./Footer.css";
+import React from 'react';
+import './Footer.css';
 
 const Footer = () => {
   return (
     <div className="footer-container">
       <p>
-        Created by{" "}
+        Created by{' '}
         <a
           href="https://github.com/xChristianZx"
           target="_blank"
@@ -15,7 +15,7 @@ const Footer = () => {
         </a>
       </p>
       <p>
-        Data provided by{" "}
+        Data provided by{' '}
         <a
           href="https://iextrading.com/"
           target="_blank"
@@ -24,6 +24,7 @@ const Footer = () => {
           IEX
         </a>
       </p>
+      <p>Disclaimer: Charting data may be inaccurate due to sandbox API</p>
     </div>
   );
 };

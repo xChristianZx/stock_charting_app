@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import './Charts.css';
-import ReactHighStock from 'react-highcharts/ReactHighstock.src';
+import Highcharts from 'highcharts/highstock';
+import HighchartsReact from 'highcharts-react-official';
 
 class Charts extends Component {
   render() {
     const { ticker, stats, data } = this.props;
-    const dataClose = data.map(item => [Date.parse(item.date), item.close]);
-    console.log('Charts Data:', data);
+    // candlestick format  - x,open,high,low,close
+    // Note: sandbox data is inaccurate and messes up candlesticks,
+    // switching to line chart
+    const dataClose = data.map(item => [
+      Date.parse(item.date),
+      // item.open,
+      // item.high,
+      // item.low,
+      item.close,
+    ]);
+
+    // console.log('Charts Data:', data);
 
     const config = {
       title: {
@@ -19,8 +30,10 @@ class Charts extends Component {
       },
       series: [
         {
+          // type: 'candlestick',
           name: 'Close',
           data: dataClose,
+
           tooltip: {
             valueDecimals: 2,
           },
@@ -30,7 +43,11 @@ class Charts extends Component {
 
     return (
       <div className="charts-container">
-        <ReactHighStock config={config} />
+        <HighchartsReact
+          options={config}
+          highcharts={Highcharts}
+          constructorType={'stockChart'}
+        />
       </div>
     );
   }
