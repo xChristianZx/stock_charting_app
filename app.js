@@ -9,12 +9,6 @@ const apiRouter = require('./routes/index');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.use((error, req, res, next) => {
-//   if (!error.statusCode) error.statusCode = 500;
-
-//   return res.status(error.statusCode).json({ error: error.toString() });
-// });
-
 app.use(apiRouter);
 
 if (process.env.NODE_ENV === 'production') {

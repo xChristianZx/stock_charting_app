@@ -8,7 +8,21 @@ const baseSandboxUrl = 'https://sandbox.iexapis.com/stable/';
 
 const router = express.Router();
 
-router.get('/chart/data', async (req, res) => {});
+router.get('/chart/data', async (req, res) => {
+  const { ticker } = req.query;
+  const compUrl = `${baseSandboxUrl}/stock/${ticker}/chart/5y?token=${keys.IEX_SANDBOX_TOKEN}`;
+
+  const iexRes = await axios.get(compUrl);
+  const { data } = iexRes;
+
+  if (data.length < 1) {
+    return res
+      .status(404)
+      .json({ msg: 'There is no data for this symbol at this times' });
+  }
+
+  res.status(201).json({ data });
+});
 
 router.get('/chart/stats', async (req, res) => {
   const { ticker } = req.query;

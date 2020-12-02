@@ -7,12 +7,6 @@ import Charts from './containers/Charts/Charts';
 import Axios from 'axios';
 import _ from 'lodash';
 
-const IEX_CLOUD_TOKEN = process.env.REACT_APP_IEX_CLOUD_TOKEN;
-const IEX_SANDBOX_TOKEN = process.env.REACT_APP_IEX_SANDBOX_TOKEN;
-
-const baseCloudUrl = 'https://cloud.iexapis.com/stable/';
-const baseSandboxUrl = 'https://sandbox.iexapis.com/stable/';
-
 const socket =
   process.env.NODE_ENV === 'production'
     ? new WebSocket('wss://chart-it-z.herokuapp.com')
@@ -119,19 +113,19 @@ class App extends Component {
   //endregion
 
   getChartStockData = ticker => {
-    const compUrl = `${baseSandboxUrl}/stock/${ticker}/chart/5y?token=${IEX_SANDBOX_TOKEN}`;
-
-    Axios.get(compUrl)
+    Axios.get('/chart/data', { params: { ticker } })
       .then(payload => {
-        // console.log(ticker, payload);
-        const data = payload.data;
+        const { data } = payload.data;
         this.setState({
           chartStockData: data,
           currentTicker: ticker,
           isLoading: false,
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const { msg } = err.response.data;
+        console.log('getChartStockData Error: ', msg);
+      });
   };
 
   getCurrentStockStats = ticker => {
@@ -155,7 +149,6 @@ class App extends Component {
     Axios.get('/watchlist/data', { params: { tickerArr } })
       .then(payload => {
         const { data } = payload.data;
-        // console.log('getWatchlistData:', payload);
         this.setState({ watchlistData: data });
       })
       .catch(err => {
