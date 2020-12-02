@@ -8,7 +8,9 @@ const baseSandboxUrl = 'https://sandbox.iexapis.com/stable/';
 
 const router = express.Router();
 
-router.get('/currentstats', async (req, res) => {
+router.get('/chart/data', async (req, res) => {});
+
+router.get('/chart/stats', async (req, res) => {
   const { ticker } = req.query;
 
   const compUrl = `${baseSandboxUrl}stock/${ticker}/stats?token=${keys.IEX_SANDBOX_TOKEN}`;
@@ -42,7 +44,6 @@ router.get('/watchlist/validation', async (req, res) => {
 
 router.get('/watchlist/data', async (req, res) => {
   const { tickerArr } = req.query;
-  console.log('tickerArr', tickerArr);
 
   const compUrl = `${baseCloudUrl}tops/last?symbols=${tickerArr}&token=${keys.IEX_CLOUD_TOKEN}`;
 
