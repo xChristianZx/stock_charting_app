@@ -149,22 +149,23 @@ class App extends Component {
   };
 
   // Populates Watchlist Data
-  getStocksArrayData = listArr => {
+  getWatchlistData = listArr => {
     const tickerArr = listArr.map(item => item).join(',');
 
-    const compUrl = `${baseCloudUrl}tops/last?symbols=${tickerArr}&token=${IEX_CLOUD_TOKEN}`;
-
-    Axios.get(compUrl)
+    Axios.get('/watchlist/data', { params: { tickerArr } })
       .then(payload => {
-        const data = payload.data;
-        console.log('StocksArrayData:', payload);
-        this.setState({ stocksArrayData: data });
+        const { data } = payload.data;
+        // console.log('getWatchlistData:', payload);
+        this.setState({ watchlistData: data });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        const { msg } = err.response.data;
+        console.log('getWatchlistData Error: ', msg);
+      });
   };
 
   tickerValidation = ticker => {
-    Axios.get(`/tickervalidation`, { params: { ticker } })
+    Axios.get(`/watchlist/validation`, { params: { ticker } })
       .then(payload => {
         if (payload.status !== 201) {
           alert('Error: Invalid symbol or problem with data provider');
