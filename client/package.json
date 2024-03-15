@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "node-sass": "^4.11.0",
